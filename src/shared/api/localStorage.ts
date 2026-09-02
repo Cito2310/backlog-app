@@ -1,6 +1,8 @@
+import type { StorageKey } from './storageKeys';
+
 type Validator<T> = (value: unknown) => value is T;
 
-export const readItem = <T>(key: string, isValid?: Validator<T>): T | null => {
+export const readItem = <T>(key: StorageKey, isValid?: Validator<T>): T | null => {
     try {
         const raw = localStorage.getItem(key);
         if (raw === null) return null;
@@ -18,7 +20,7 @@ export const readItem = <T>(key: string, isValid?: Validator<T>): T | null => {
     }
 };
 
-export const writeItem = <T>(key: string, value: T): boolean => {
+export const writeItem = <T>(key: StorageKey, value: T): boolean => {
     try {
         localStorage.setItem(key, JSON.stringify(value));
         return true;
@@ -27,7 +29,7 @@ export const writeItem = <T>(key: string, value: T): boolean => {
     }
 };
 
-export const removeItem = (key: string): void => {
+export const removeItem = (key: StorageKey): void => {
     try {
         localStorage.removeItem(key);
     } catch {
@@ -35,7 +37,7 @@ export const removeItem = (key: string): void => {
     }
 };
 
-export const hasItem = (key: string): boolean => {
+export const hasItem = (key: StorageKey): boolean => {
     try {
         return localStorage.getItem(key) !== null;
     } catch {

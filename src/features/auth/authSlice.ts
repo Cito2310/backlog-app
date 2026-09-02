@@ -1,8 +1,8 @@
-import type { LoginResponse, RegisterResponse, User } from '@/types/auth';
+import type { LoginResponse, RegisterResponse, StoredAuth, User } from '@/types/auth';
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-type Status = "uninitialized" | 'ok' | 'loading' | 'failed' | 'success';
+type Status = 'uninitialized' | 'ok' | 'loading' | 'failed' | 'success';
 
 type AuthState = {
     token: string | null;
@@ -12,7 +12,6 @@ type AuthState = {
     pendingRecoveryCode: string | null;
 };
 
-
 const initialState: AuthState = {
     token: null,
     user: null,
@@ -20,7 +19,6 @@ const initialState: AuthState = {
     error: null,
     pendingRecoveryCode: null,
 };
-
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -35,32 +33,47 @@ export const authSlice = createSlice({
             state.error = action.payload;
         },
 
-        loadUser: (state, action: PayloadAction<LoginResponse | RegisterResponse>) => {
+        authLoaded: (state, action: PayloadAction<LoginResponse | RegisterResponse>) => {
             state.token = action.payload.token;
             state.user = action.payload.user;
-            state.status = "success";
+            state.status = 'success';
             state.error = null;
-            state.pendingRecoveryCode = "recoveryCode" in action.payload ? action.payload.recoveryCode : null
+            state.pendingRecoveryCode =
+                'recoveryCode' in action.payload ? action.payload.recoveryCode : null;
         },
 
-        clearUser: (state) => {
+        authRestored: (state, action: PayloadAction<StoredAuth>) => {
+            state.token = action.payload.token;
+            state.user = action.payload.user;
+            state.status = 'ok';
             state.error = null;
             state.pendingRecoveryCode = null;
-            state.status = "ok";
+        },
+
+        authCleared: (state) => {
+            state.error = null;
+            state.pendingRecoveryCode = null;
+            state.status = 'ok';
             state.user = null;
             state.token = null;
         },
 
-        refreshUser: (state, action: PayloadAction<User>) => {
-            state.user = action.payload
-        }
+        userRefreshed: (state, action: PayloadAction<User>) => {
+            state.user = action.payload;
+        },
+
+        recoveryCodeAcknowledged: (state) => {
+            state.pendingRecoveryCode = null;
+        },
     },
 });
 
 export const {
+    authCleared,
+    authLoaded,
     authRequestFailed,
     authRequestStarted,
-    loadUser,
-    clearUser,
-    refreshUser,
+    authRestored,
+    recoveryCodeAcknowledged,
+    userRefreshed,
 } = authSlice.actions;

@@ -14,4 +14,7 @@ export type MeResponse = { user: User };
 export type AuthBody = {
     username: string;
     password: string;
-}
+};
+
+// Lo que se guarda en el localStorage: es la respuesta del login sin el recoveryCode
+export type StoredAuth = { user: User; token: string };
