@@ -4,6 +4,8 @@ import { removeItem, writeItem } from '@/shared/api/localStorage';
 import { STORAGE_KEYS } from '@/shared/api/storageKeys';
 import { store } from '@/store/store';
 import { authCleared } from './features/auth/authSlice';
+import LoginPage from './features/auth/pages/LoginPage';
+import RegisterPage from './features/auth/pages/RegisterPage';
 import { loadUserByLocalStorage } from './features/auth/authThunks';
 import { GuestRoute, ProtectedRoute } from './shared/components/Guards';
 
@@ -30,18 +32,17 @@ const initApp = () => {
 
 initApp();
 
-
 const Placeholder = ({ title }: { title: string }) => (
-    <div className="flex min-h-screen items-center justify-center bg-slate-950">
-        <h1 className="text-2xl font-semibold text-slate-100">{title}</h1>
+    <div className="flex min-h-screen items-center justify-center bg-zinc-800">
+        <h1 className="text-2xl font-semibold text-zinc-50">{title}</h1>
     </div>
 );
 
 const App = () => (
     <Routes>
         <Route element={<GuestRoute />}>
-            <Route path="/login" element={<Placeholder title="Login" />} />
-            <Route path="/register" element={<Placeholder title="Registro" />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
         </Route>
 
         <Route element={<ProtectedRoute />}>

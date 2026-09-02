@@ -1,5 +1,5 @@
-import { useAppSelector } from "@/store/store";
-import { Navigate, Outlet, useLocation } from "react-router";
+import { useAppSelector } from '@/store/store';
+import { Navigate, Outlet, useLocation } from 'react-router';
 
 export const ProtectedRoute = () => {
     const token = useAppSelector((state) => state.auth.token);

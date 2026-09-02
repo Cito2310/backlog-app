@@ -75,10 +75,10 @@ const ModalLayout = ({
             aria-labelledby={titleId}
             onCancel={handleCancel}
             onClick={handleBackdropClick}
-            className={`m-auto w-full ${sizeClasses[size]} max-h-[85vh] overflow-hidden rounded-xl border border-slate-800 bg-slate-900 p-0 text-slate-100 backdrop:bg-slate-950/70`}
+            className={`m-auto w-full ${sizeClasses[size]} max-h-[85vh] overflow-hidden rounded-xl border border-zinc-600 bg-zinc-700 p-0 text-zinc-100 backdrop:bg-black/60`}
         >
             <div className="flex max-h-[85vh] flex-col">
-                <header className="flex items-center justify-between gap-4 border-b border-slate-800 px-5 py-4">
+                <header className="flex items-center justify-between gap-4 border-b border-zinc-600 px-5 py-4">
                     <h2 id={titleId} className="text-lg font-semibold">
                         {title}
                     </h2>
@@ -86,7 +86,7 @@ const ModalLayout = ({
                         type="button"
                         onClick={onClose}
                         aria-label="Cerrar"
-                        className="rounded-md p-1 text-slate-400 transition-colors hover:bg-slate-800 hover:text-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-400"
+                        className="rounded-md p-1 text-zinc-400 transition-colors hover:bg-zinc-600 hover:text-zinc-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-400"
                     >
                         <svg
                             viewBox="0 0 20 20"
@@ -105,7 +105,7 @@ const ModalLayout = ({
                 <div className="overflow-y-auto px-5 py-4">{children}</div>
 
                 {footer && (
-                    <footer className="flex justify-end gap-2 border-t border-slate-800 px-5 py-4">
+                    <footer className="flex justify-end gap-2 border-t border-zinc-600 px-5 py-4">
                         {footer}
                     </footer>
                 )}
