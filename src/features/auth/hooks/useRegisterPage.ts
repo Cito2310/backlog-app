@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import { isApiError } from '@/shared/api';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import type { AuthBody } from '@/types/auth';
-import { applyApiError } from '../applyApiError';
+import { applyApiError } from '@/shared/applyApiError';
 import { register as registerAccount } from '../authThunks';
 
 type RegisterBody = AuthBody & { confirmPassword: string };

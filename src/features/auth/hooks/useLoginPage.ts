@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import type { AuthBody } from '@/types/auth';
-import { applyApiError } from '../applyApiError';
+import { applyApiError } from '@/shared/applyApiError';
 import { login } from '../authThunks';
 
 type RedirectState = { from?: string } | null;

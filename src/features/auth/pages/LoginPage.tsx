@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import AuthField from '../components/AuthField';
+import FormField from '@/shared/components/FormField';
 import AuthLayout from '../components/AuthLayout';
 import { useLoginPage } from '../hooks/useLoginPage';
 
@@ -20,7 +20,7 @@ const LoginPage = () => {
             }
         >
             <form className="space-y-4" onSubmit={onSubmit} noValidate>
-                <AuthField
+                <FormField
                     field={usernameField}
                     error={errors.username?.message}
                     id="username"
@@ -29,7 +29,7 @@ const LoginPage = () => {
                     placeholder="nombre de usuario"
                     autoComplete="username"
                 />
-                <AuthField
+                <FormField
                     field={passwordField}
                     error={errors.password?.message}
                     id="password"

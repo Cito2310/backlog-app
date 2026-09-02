@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import AuthField from '../components/AuthField';
+import FormField from '@/shared/components/FormField';
 import AuthLayout from '../components/AuthLayout';
 import { useRegisterPage } from '../hooks/useRegisterPage';
 
@@ -21,7 +21,7 @@ const RegisterPage = () => {
             }
         >
             <form className="space-y-4" onSubmit={onSubmit} autoComplete="off" noValidate>
-                <AuthField
+                <FormField
                     field={usernameField}
                     error={errors.username?.message}
                     id="username"
@@ -31,7 +31,7 @@ const RegisterPage = () => {
                     hint="Entre 3 y 30 caracteres. Solo letras, números, punto, guion y guion bajo."
                     autoComplete="off"
                 />
-                <AuthField
+                <FormField
                     field={passwordField}
                     error={errors.password?.message}
                     id="password"
@@ -41,7 +41,7 @@ const RegisterPage = () => {
                     hint="Mínimo 8 caracteres."
                     autoComplete="off"
                 />
-                <AuthField
+                <FormField
                     field={confirmPasswordField}
                     error={errors.confirmPassword?.message}
                     id="confirmPassword"
