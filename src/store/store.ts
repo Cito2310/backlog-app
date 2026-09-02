@@ -1,8 +1,9 @@
 import { combineSlices, configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { authSlice } from '@/features/auth/authSlice';
+import { projectsSlice } from '@/features/projects/projectsSlice';
 
-const rootReducer = combineSlices(authSlice);
+const rootReducer = combineSlices(authSlice, projectsSlice);
 
 export const store = configureStore({
     reducer: rootReducer,

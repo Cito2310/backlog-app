@@ -1,3 +1,4 @@
+import Navbar from '@/features/navbar/components/Navbar';
 import { useAppSelector } from '@/store/store';
 import { Navigate, Outlet, useLocation } from 'react-router';
 
@@ -6,10 +7,13 @@ export const ProtectedRoute = () => {
     const location = useLocation();
 
     // from queda guardado para volver acá después del login, en vez de ir siempre a /projects
-    return token ? (
-        <Outlet />
-    ) : (
-        <Navigate to="/login" replace state={{ from: location.pathname }} />
+    if (!token) return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+
+    return (
+        <div className="min-h-screen bg-zinc-800">
+            <Navbar />
+            <Outlet />
+        </div>
     );
 };
 

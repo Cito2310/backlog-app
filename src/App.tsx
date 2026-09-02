@@ -6,6 +6,7 @@ import { store } from '@/store/store';
 import { authCleared } from './features/auth/authSlice';
 import LoginPage from './features/auth/pages/LoginPage';
 import RegisterPage from './features/auth/pages/RegisterPage';
+import ProjectsPage from './features/projects/pages/ProjectsPage';
 import { loadUserByLocalStorage } from './features/auth/authThunks';
 import { GuestRoute, ProtectedRoute } from './shared/components/Guards';
 
@@ -46,7 +47,7 @@ const App = () => (
         </Route>
 
         <Route element={<ProtectedRoute />}>
-            <Route path="/projects" element={<Placeholder title="Proyectos" />} />
+            <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/projects/:id" element={<Placeholder title="Detalle del proyecto" />} />
             <Route path="/account" element={<Placeholder title="Cuenta" />} />
         </Route>
