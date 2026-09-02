@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import type { ProjectSummary } from '@/types/project';
 
 type ProjectCardProps = {
@@ -7,12 +8,12 @@ type ProjectCardProps = {
 
 const ProjectCard = ({ project, onDelete }: ProjectCardProps) => (
     <div className="group flex items-center gap-4 rounded-xl border border-zinc-600 bg-zinc-700 px-5 py-4 transition-colors hover:border-zinc-500">
-        <div className="min-w-0 flex-1">
+        <Link to={`/projects/${project._id}`} className="min-w-0 flex-1">
             <h2 className="truncate font-medium text-zinc-50">{project.name}</h2>
             <p className="mt-1 truncate text-sm text-zinc-400">
                 {project.description || 'Sin descripción'}
             </p>
-        </div>
+        </Link>
 
         <button
             type="button"

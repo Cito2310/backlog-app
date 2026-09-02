@@ -9,11 +9,17 @@ import {
     projectsRequestStarted,
 } from './projectsSlice';
 
-// Se relanza el error original para que el formulario pueda leer errors[] y marcar el campo
-// exacto. El store solo se queda con el mensaje, que es para el cartel
+// Los thunks de escritura relanzan el error original para que el formulario pueda leer
+// errors[] y marcar el campo exacto. El store se queda con el mensaje, que es para el cartel
 const fail = (dispatch: AppDispatch, error: unknown): never => {
     dispatch(projectsRequestFailed(toErrorPayload(error).msg));
     throw error;
+};
+
+// Los de lectura no relanzan: no hay formulario esperando, y relanzar dejaría una promesa
+// rechazada sin atrapar en cada llamada
+const failSilently = (dispatch: AppDispatch, error: unknown): void => {
+    dispatch(projectsRequestFailed(toErrorPayload(error).msg));
 };
 
 export const fetchProjects = () => async (dispatch: AppDispatch) => {
@@ -22,7 +28,7 @@ export const fetchProjects = () => async (dispatch: AppDispatch) => {
         const dataProjects = await apiGet<ProjectsResponse>('/backlog-app/projects');
         dispatch(projectsLoaded(dataProjects.projects));
     } catch (error) {
-        fail(dispatch, error);
+        failSilently(dispatch, error);
     }
 };
 
@@ -35,7 +41,10 @@ export const createProject =
                 name: name.trim(),
                 description: description?.trim() ?? '',
             });
-            dispatch(projectCreated(dataProject.project));
+            // El POST devuelve el proyecto entero, pero la lista solo guarda el resumen:
+            // si no se recorta, los recién creados tendrían features y los del GET no
+            const { _id, name: createdName, description: createdDescription } = dataProject.project;
+            dispatch(projectCreated({ _id, name: createdName, description: createdDescription }));
         } catch (error) {
             fail(dispatch, error);
         }
