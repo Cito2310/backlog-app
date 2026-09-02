@@ -1,3 +1,4 @@
+import RecoveryCodeModal from '@/features/auth/components/RecoveryCodeModal';
 import Navbar from '@/features/navbar/Navbar';
 import { useAppSelector } from '@/store/store';
 import { Navigate, Outlet, useLocation } from 'react-router';
@@ -13,6 +14,7 @@ export const ProtectedRoute = () => {
         <div className="min-h-screen bg-zinc-800">
             <Navbar />
             <Outlet />
+            <RecoveryCodeModal />
         </div>
     );
 };

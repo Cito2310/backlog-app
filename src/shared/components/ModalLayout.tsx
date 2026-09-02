@@ -11,6 +11,8 @@ type ModalLayoutProps = {
     footer?: ReactNode;
     size?: ModalSize;
     closeOnBackdrop?: boolean;
+    // false cierra las tres salidas de una: la X, Escape y el click afuera
+    dismissible?: boolean;
 };
 
 const sizeClasses: Record<ModalSize, string> = {
@@ -19,9 +21,17 @@ const sizeClasses: Record<ModalSize, string> = {
     lg: 'max-w-2xl',
 };
 
-type UseModalLayoutParams = Pick<ModalLayoutProps, 'isOpen' | 'onClose' | 'closeOnBackdrop'>;
+type UseModalLayoutParams = Pick<
+    ModalLayoutProps,
+    'isOpen' | 'onClose' | 'closeOnBackdrop' | 'dismissible'
+>;
 
-const useModalLayout = ({ isOpen, onClose, closeOnBackdrop }: UseModalLayoutParams) => {
+const useModalLayout = ({
+    isOpen,
+    onClose,
+    closeOnBackdrop,
+    dismissible,
+}: UseModalLayoutParams) => {
     const dialogRef = useRef<HTMLDialogElement>(null);
 
     useEffect(() => {
@@ -41,12 +51,12 @@ const useModalLayout = ({ isOpen, onClose, closeOnBackdrop }: UseModalLayoutPara
     // El evento cancel cubre Escape: se previene para que todo cierre pase por onClose
     const handleCancel = (event: SyntheticEvent<HTMLDialogElement>) => {
         event.preventDefault();
-        onClose();
+        if (dismissible) onClose();
     };
 
     // El click sobre el backdrop llega con el dialog como target, no con su contenido
     const handleBackdropClick = (event: MouseEvent<HTMLDialogElement>) => {
-        if (!closeOnBackdrop) return;
+        if (!dismissible || !closeOnBackdrop) return;
         if (event.target === dialogRef.current) onClose();
     };
 
@@ -61,12 +71,14 @@ const ModalLayout = ({
     footer,
     size = 'md',
     closeOnBackdrop = true,
+    dismissible = true,
 }: ModalLayoutProps) => {
     const titleId = useId();
     const { dialogRef, handleCancel, handleBackdropClick } = useModalLayout({
         isOpen,
         onClose,
         closeOnBackdrop,
+        dismissible,
     });
 
     return (
@@ -82,24 +94,26 @@ const ModalLayout = ({
                     <h2 id={titleId} className="text-lg font-semibold">
                         {title}
                     </h2>
-                    <button
-                        type="button"
-                        onClick={onClose}
-                        aria-label="Cerrar"
-                        className="rounded-md p-1 text-zinc-400 transition-colors hover:bg-zinc-600 hover:text-zinc-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-400"
-                    >
-                        <svg
-                            viewBox="0 0 20 20"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.75"
-                            strokeLinecap="round"
-                            className="size-5"
-                            aria-hidden="true"
+                    {dismissible && (
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            aria-label="Cerrar"
+                            className="rounded-md p-1 text-zinc-400 transition-colors hover:bg-zinc-600 hover:text-zinc-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-400"
                         >
-                            <path d="M5 5l10 10M15 5L5 15" />
-                        </svg>
-                    </button>
+                            <svg
+                                viewBox="0 0 20 20"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.75"
+                                strokeLinecap="round"
+                                className="size-5"
+                                aria-hidden="true"
+                            >
+                                <path d="M5 5l10 10M15 5L5 15" />
+                            </svg>
+                        </button>
+                    )}
                 </header>
 
                 <div className="overflow-y-auto px-5 py-4">{children}</div>
