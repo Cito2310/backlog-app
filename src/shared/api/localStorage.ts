@@ -1,0 +1,44 @@
+type Validator<T> = (value: unknown) => value is T;
+
+export const readItem = <T>(key: string, isValid?: Validator<T>): T | null => {
+    try {
+        const raw = localStorage.getItem(key);
+        if (raw === null) return null;
+
+        const parsed: unknown = JSON.parse(raw);
+
+        if (isValid && !isValid(parsed)) {
+            localStorage.removeItem(key);
+            return null;
+        }
+
+        return parsed as T;
+    } catch {
+        return null;
+    }
+};
+
+export const writeItem = <T>(key: string, value: T): boolean => {
+    try {
+        localStorage.setItem(key, JSON.stringify(value));
+        return true;
+    } catch {
+        return false;
+    }
+};
+
+export const removeItem = (key: string): void => {
+    try {
+        localStorage.removeItem(key);
+    } catch {
+        // sin storage no hay nada que borrar
+    }
+};
+
+export const hasItem = (key: string): boolean => {
+    try {
+        return localStorage.getItem(key) !== null;
+    } catch {
+        return false;
+    }
+};

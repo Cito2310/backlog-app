@@ -12,12 +12,13 @@ Las convenciones generales (header `token`, formato de errores, códigos) están
 | -------- | ---------------- | ----- | -------------------------------- |
 | `POST`   | `/auth/register` | No    | Crea una cuenta y devuelve token |
 | `POST`   | `/auth/login`    | No    | Autentica y devuelve token       |
+| `GET`    | `/auth/me`       | Sí    | Devuelve el usuario del token    |
 | `PATCH`  | `/auth/me`       | Sí    | Edita el usuario del token       |
 | `DELETE` | `/auth/me`       | Sí    | Da de baja el usuario del token  |
 
 Las rutas privadas operan **siempre sobre el usuario del token**, nunca sobre un id de la
-URL, y exigen `currentPassword`: un token robado no alcanza para cambiar credenciales ni
-dar de baja la cuenta.
+URL. Las que escriben (`PATCH` y `DELETE`) exigen además `currentPassword`: un token
+robado no alcanza para cambiar credenciales ni dar de baja la cuenta.
 
 ---
 
@@ -121,6 +122,29 @@ Autentica y emite un token nuevo. **Pública.**
 | `400`  | `validation error`    | Falta `username` o `password`                                                       |
 | `401`  | `invalid credentials` | Usuario inexistente o contraseña incorrecta (mismo mensaje para ambos, a propósito) |
 | `403`  | `user is inactive`    | La cuenta fue dada de baja                                                          |
+
+---
+
+## `GET /auth/me`
+
+Devuelve el usuario del token. **Requiere token.**
+
+Sirve para rehidratar la sesión al arrancar el cliente: confirma que el token sigue
+vigente y recupera el `user` sin volver a pedir credenciales. No lleva body ni
+`currentPassword`, porque es una lectura y no toca credenciales.
+
+**`200 OK`**
+
+```json
+{ "user": { "...": "objeto user" } }
+```
+
+**Errores**
+
+| Código | `msg`                            | Motivo                                         |
+| ------ | -------------------------------- | ---------------------------------------------- |
+| `401`  | `token needed` / `invalid token` | Falta el header `token` o es inválido/expirado |
+| `403`  | `user is inactive`               | La cuenta fue dada de baja                     |
 
 ---
 
