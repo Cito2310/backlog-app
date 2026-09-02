@@ -1,4 +1,4 @@
-import Navbar from '@/features/navbar/components/Navbar';
+import Navbar from '@/features/navbar/Navbar';
 import { useAppSelector } from '@/store/store';
 import { Navigate, Outlet, useLocation } from 'react-router';
 
